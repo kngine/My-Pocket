@@ -1,0 +1,145 @@
+.readerContainer {
+  max-width: 720px;
+}
+
+.loadingContainer, .errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
+
+.nav {
+  position: sticky;
+  top: env(safe-area-inset-top, 20px);
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  margin-bottom: 40px;
+}
+
+.navButton {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.navButton:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--text-primary);
+}
+
+.navButton.active {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+}
+
+.articleHeader {
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  font-family: var(--font-sans);
+}
+
+.meta {
+  display: flex;
+  gap: 12px;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.byline {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.content {
+  font-family: var(--font-serif);
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+.content p {
+  margin-bottom: 1.5em;
+}
+
+.content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 2em 0;
+}
+
+.content h2, .content h3, .content h4 {
+  font-family: var(--font-sans);
+  margin-top: 2em;
+  margin-bottom: 1em;
+  line-height: 1.3;
+}
+
+.content a {
+  color: var(--accent-color);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.2s;
+}
+
+.content a:hover {
+  text-decoration-color: var(--accent-color);
+}
+
+.content blockquote {
+  border-left: 4px solid var(--accent-color);
+  padding-left: 20px;
+  margin: 2em 0;
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+/* Typography scales */
+.small .content { font-size: 1rem; }
+.medium .content { font-size: 1.15rem; }
+.large .content { font-size: 1.35rem; }
+
+.footer {
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 1px solid var(--card-border);
+  text-align: center;
+}
+
+.originalLink {
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.originalLink:hover {
+  color: var(--text-primary);
+}
+
+.backButton {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: var(--text-primary);
+  color: var(--bg-color);
+  border-radius: 8px;
+  font-weight: 600;
+}
