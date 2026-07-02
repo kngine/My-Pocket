@@ -40,6 +40,39 @@
   font-weight: 500;
 }
 
+.dataActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  color: var(--text-secondary);
+}
+
+.subtleButton {
+  color: var(--accent-purple);
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 999px;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.subtleButton:hover:not(:disabled) {
+  background: rgba(175, 82, 222, 0.1);
+}
+
+.subtleButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.dataDivider {
+  opacity: 0.5;
+}
+
+.hiddenInput {
+  display: none;
+}
+
 .form {
   display: flex;
   gap: 8px;
@@ -111,6 +144,24 @@
   text-align: center;
   font-weight: 500;
   border: 1px solid rgba(255, 45, 85, 0.2);
+}
+
+.status,
+.importProgress {
+  color: var(--text-primary);
+  background: rgba(52, 199, 89, 0.1);
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 500;
+  border: 1px solid rgba(52, 199, 89, 0.2);
+}
+
+.importProgress {
+  color: var(--accent-purple);
+  background: rgba(175, 82, 222, 0.1);
+  border-color: rgba(175, 82, 222, 0.2);
 }
 
 .sectionHeader {

@@ -68,6 +68,14 @@ export const createFolder = async (name: string): Promise<Folder> => {
   return folder;
 };
 
+export const saveFolder = async (folder: Folder): Promise<void> => {
+  await foldersStore.setItem(folder.id, folder);
+};
+
+export const clearAllData = async (): Promise<void> => {
+  await Promise.all([articlesStore.clear(), foldersStore.clear()]);
+};
+
 export const getFolders = async (): Promise<Folder[]> => {
   const folders: Folder[] = [];
   await foldersStore.iterate<Folder, void>((value, key, iterationNumber) => {

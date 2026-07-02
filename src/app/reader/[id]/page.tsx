@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import DOMPurify from 'dompurify';
 import { getArticle, Article } from '@/lib/storage';
+import { getSiteLabel } from '@/lib/url';
 import styles from './page.module.css';
 
 export default function Reader() {
@@ -74,7 +75,7 @@ export default function Reader() {
           <h1 className={styles.title}>{article.title}</h1>
           <div className={styles.meta}>
             {article.byline && <span className={styles.byline}>{article.byline}</span>}
-            <span className={styles.siteName}>{article.siteName || new URL(article.url).hostname}</span>
+            <span className={styles.siteName}>{getSiteLabel(article.url, article.siteName)}</span>
           </div>
         </header>
 

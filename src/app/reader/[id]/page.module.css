@@ -143,3 +143,28 @@
   border-radius: 8px;
   font-weight: 600;
 }
+
+@media (max-width: 640px) {
+  .nav {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .meta {
+    flex-wrap: wrap;
+  }
+
+  .articleHeader {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+  }
+
+  .footer {
+    margin-top: 40px;
+  }
+}
