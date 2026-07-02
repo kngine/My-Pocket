@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Readability } from '@mozilla/readability';
-import { JSDOM } from 'jsdom';
+import { parseHTML } from 'linkedom';
 
 export async function POST(request: Request) {
   try {
@@ -24,36 +24,36 @@ export async function POST(request: Request) {
 
     const html = await response.text();
 
-    const doc = new JSDOM(html, { url });
-    
+    const { document } = parseHTML(html);
+
     // Fix lazy loaded images before passing to Readability
-    const images = doc.window.document.querySelectorAll('img');
-    images.forEach(img => {
+    const images = document.querySelectorAll('img');
+    images.forEach((img) => {
       // Many sites use data-* attributes for lazy loading
-      const realSrc = img.getAttribute('data-src') || 
-                      img.getAttribute('data-lazy-src') || 
+      const realSrc = img.getAttribute('data-src') ||
+                      img.getAttribute('data-lazy-src') ||
                       img.getAttribute('data-original') ||
                       img.getAttribute('data-src-large') ||
                       img.getAttribute('data-image-src');
-      
+
       if (realSrc && !img.getAttribute('src')) {
         img.setAttribute('src', realSrc);
       }
     });
 
     // Extract og:image from head for fallback
-    const ogImageMeta = doc.window.document.querySelector('meta[property="og:image"]');
+    const ogImageMeta = document.querySelector('meta[property="og:image"]');
     const ogImage = ogImageMeta ? ogImageMeta.getAttribute('content') : null;
 
-    const reader = new Readability(doc.window.document);
+    const reader = new Readability(document as unknown as Document);
     const article = reader.parse();
 
     if (!article) {
       return NextResponse.json({ error: 'Could not parse article' }, { status: 500 });
     }
-    
+
     let content = article.content;
-    
+
     // If we have an og:image, prepend it to the content to ensure the article has a header image
     // especially useful for sites like Yahoo Finance that hide body images in JS state
     if (ogImage) {

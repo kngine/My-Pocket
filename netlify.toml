@@ -6,4 +6,4 @@
 
 [functions]
   node_bundler = "esbuild"
-  external_node_modules = ["jsdom", "@mozilla/readability"]
+  external_node_modules = ["linkedom", "@mozilla/readability"]
