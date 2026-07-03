@@ -1,38 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Merriweather:wght@400;700&display=swap');
-
 :root {
-  --bg-color: #f0f4f8;
-  --bg-gradient: radial-gradient(circle at 15% 50%, rgba(255, 63, 108, 0.08), transparent 50%), 
-                 radial-gradient(circle at 85% 30%, rgba(175, 82, 222, 0.08), transparent 50%);
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
+  color-scheme: dark;
+  --bg-color: #050505;
+  --bg-gradient: radial-gradient(circle at 16% 0%, rgba(255, 45, 85, 0.26), transparent 34%),
+                 radial-gradient(circle at 90% 16%, rgba(170, 48, 255, 0.2), transparent 28%),
+                 linear-gradient(180deg, #151519 0%, #070707 42%, #000 100%);
+  --text-primary: #f8f8fa;
+  --text-secondary: rgba(235, 235, 245, 0.58);
   --accent-color: #ff2d55;
-  --accent-hover: #ff3b30;
-  --accent-purple: #af52de;
-  --card-bg: rgba(255, 255, 255, 0.75);
-  --card-border: rgba(255, 255, 255, 0.5);
-  --card-glow: rgba(255, 45, 85, 0.1);
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 12px 24px -4px rgba(30, 41, 59, 0.1);
-  --shadow-glass: 0 16px 40px 0 rgba(30, 41, 59, 0.06);
-  --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --accent-hover: #ff4167;
+  --accent-purple: #bf5af2;
+  --card-bg: rgba(28, 28, 32, 0.72);
+  --card-border: rgba(255, 255, 255, 0.09);
+  --card-glow: rgba(255, 45, 85, 0.2);
+  --shadow-sm: 0 8px 22px rgba(0, 0, 0, 0.18);
+  --shadow-md: 0 18px 36px rgba(0, 0, 0, 0.26);
+  --shadow-glass: 0 18px 48px rgba(0, 0, 0, 0.32);
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-serif: 'Merriweather', Georgia, Cambria, "Times New Roman", Times, serif;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg-color: #0f172a;
-    --bg-gradient: radial-gradient(circle at 15% 50%, rgba(255, 63, 108, 0.15), transparent 40%), 
-                   radial-gradient(circle at 85% 30%, rgba(175, 82, 222, 0.15), transparent 40%);
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --card-bg: rgba(30, 41, 59, 0.5);
-    --card-border: rgba(255, 255, 255, 0.08);
-    --card-glow: rgba(255, 45, 85, 0.15);
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 12px 24px -4px rgba(0, 0, 0, 0.5);
-    --shadow-glass: 0 16px 40px 0 rgba(0, 0, 0, 0.4);
-  }
 }
 
 * {
@@ -42,7 +26,9 @@
 }
 
 html {
+  min-height: 100%;
   overflow-x: hidden;
+  background: #000;
 }
 
 body {
@@ -50,14 +36,20 @@ body {
   background-color: var(--bg-color);
   background-image: var(--bg-gradient);
   background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   color: var(--text-primary);
-  line-height: 1.6;
+  line-height: 1.4;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  accent-color: var(--accent-color);
   transition: background-color 0.4s ease, color 0.4s ease;
   min-height: 100vh;
   min-height: 100dvh;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
+  touch-action: manipulation;
 }
 
 a {
@@ -68,8 +60,15 @@ a {
 button {
   cursor: pointer;
   font-family: inherit;
+  color: inherit;
   border: none;
   background: none;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
 }
 
 .glass-panel {
@@ -83,11 +82,11 @@ button {
 
 .container {
   width: 100%;
-  max-width: 900px;
+  max-width: 960px;
   margin: 0 auto;
   padding-top: max(16px, env(safe-area-inset-top));
   padding-right: max(16px, env(safe-area-inset-right));
-  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
   padding-left: max(16px, env(safe-area-inset-left));
 }
 

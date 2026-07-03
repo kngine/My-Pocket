@@ -1,5 +1,6 @@
 .readerContainer {
   max-width: 720px;
+  padding-bottom: calc(42px + env(safe-area-inset-bottom));
 }
 
 .loadingContainer, .errorContainer {
@@ -12,26 +13,32 @@
 
 .nav {
   position: sticky;
-  top: env(safe-area-inset-top, 20px);
+  top: max(10px, env(safe-area-inset-top));
   z-index: 10;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 16px;
-  margin-bottom: 40px;
+  padding: 8px;
+  margin-bottom: 32px;
+  border-radius: 26px;
+  background: rgba(20, 20, 24, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(28px) saturate(1.4);
+  -webkit-backdrop-filter: blur(28px) saturate(1.4);
 }
 
 .navButton {
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  transition: background-color 0.2s ease, color 0.2s ease;
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 20px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.72);
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
 }
 
-.navButton:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-  color: var(--text-primary);
+.navButton:active {
+  transform: scale(0.96);
 }
 
 .navButton.active {
@@ -41,19 +48,20 @@
 
 .controls {
   display: flex;
-  gap: 8px;
+  gap: 4px;
 }
 
 .articleHeader {
-  margin-bottom: 40px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--card-border);
+  margin-bottom: 32px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  line-height: 1.2;
+  font-size: clamp(2.15rem, 9vw, 3.8rem);
+  font-weight: 850;
+  letter-spacing: -0.06em;
+  line-height: 0.98;
   margin-bottom: 16px;
   font-family: var(--font-sans);
 }
@@ -61,8 +69,10 @@
 .meta {
   display: flex;
   gap: 12px;
+  flex-wrap: wrap;
   color: var(--text-secondary);
-  font-size: 1rem;
+  font-size: 0.95rem;
+  font-weight: 700;
 }
 
 .byline {
@@ -71,20 +81,21 @@
 }
 
 .content {
-  font-family: var(--font-serif);
-  line-height: 1.8;
+  font-family: var(--font-sans);
+  line-height: 1.72;
   color: var(--text-primary);
 }
 
 .content p {
-  margin-bottom: 1.5em;
+  margin-bottom: 1.35em;
 }
 
 .content img {
   max-width: 100%;
   height: auto;
-  border-radius: 8px;
+  border-radius: 22px;
   margin: 2em 0;
+  box-shadow: var(--shadow-md);
 }
 
 .content h2, .content h3, .content h4 {
@@ -115,48 +126,50 @@
 
 /* Typography scales */
 .small .content { font-size: 1rem; }
-.medium .content { font-size: 1.15rem; }
-.large .content { font-size: 1.35rem; }
+.medium .content { font-size: 1.1rem; }
+.large .content { font-size: 1.25rem; }
 
 .footer {
   margin-top: 60px;
   padding-top: 24px;
-  border-top: 1px solid var(--card-border);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center;
 }
 
 .originalLink {
-  color: var(--text-secondary);
-  font-weight: 500;
-  transition: color 0.2s;
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background: var(--accent-color);
+  border-radius: 999px;
+  padding: 0 20px;
+  font-weight: 800;
+  transition: transform 0.18s ease;
 }
 
-.originalLink:hover {
-  color: var(--text-primary);
+.originalLink:active {
+  transform: scale(0.96);
 }
 
 .backButton {
   margin-top: 20px;
   padding: 10px 20px;
-  background-color: var(--text-primary);
-  color: var(--bg-color);
-  border-radius: 8px;
-  font-weight: 600;
+  background-color: var(--accent-color);
+  color: white;
+  border-radius: 999px;
+  font-weight: 800;
 }
 
 @media (max-width: 640px) {
   .nav {
-    flex-wrap: wrap;
     gap: 8px;
-    margin-bottom: 24px;
+    margin-bottom: 28px;
   }
 
-  .title {
-    font-size: 1.75rem;
-  }
-
-  .meta {
-    flex-wrap: wrap;
+  .navButton {
+    padding: 0 12px;
   }
 
   .articleHeader {

@@ -4,8 +4,8 @@
   "description": "Save articles for offline reading",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f7f9fa",
-  "theme_color": "#f7f9fa",
+  "background_color": "#050505",
+  "theme_color": "#050505",
   "orientation": "portrait-primary",
   "icons": [
     {

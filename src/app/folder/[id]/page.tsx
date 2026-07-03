@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { 
   getAllArticles, Article, deleteArticle, updateArticle,
   getFolder, Folder, getFolders
 } from '@/lib/storage';
+import { getSiteLabel } from '@/lib/url';
 import homeStyles from '@/app/page.module.css';
 import styles from './page.module.css';
 
@@ -19,11 +20,7 @@ export default function FolderPage() {
   const [allFolders, setAllFolders] = useState<Folder[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (folderId) loadData();
-  }, [folderId]);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setIsLoading(true);
     const [foundFolder, allArticles, savedFolders] = await Promise.all([
       getFolder(folderId),
@@ -34,7 +31,15 @@ export default function FolderPage() {
     setArticles(allArticles.filter(a => a.folderId === folderId));
     setAllFolders(savedFolders);
     setIsLoading(false);
-  };
+  }, [folderId]);
+
+  useEffect(() => {
+    if (folderId) {
+      // localforage is the external client-side source of truth for folders.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      loadData();
+    }
+  }, [folderId, loadData]);
 
   const handleDeleteArticle = async (e: React.MouseEvent, articleId: string) => {
     e.stopPropagation();
@@ -69,8 +74,11 @@ export default function FolderPage() {
   return (
     <div className="container">
       <header className={styles.header}>
-        <button className={styles.backButton} onClick={() => router.push('/')}>← Back</button>
-        <h1 className={`${homeStyles.title} text-gradient`}>{folder.name}</h1>
+        <button className={styles.backButton} onClick={() => router.push('/')}>Back</button>
+        <div>
+          <p className={homeStyles.sectionKicker}>Folder</p>
+          <h1 className={homeStyles.title}>{folder.name}</h1>
+        </div>
       </header>
 
       <div className={homeStyles.grid}>
@@ -84,7 +92,7 @@ export default function FolderPage() {
               <h2 className={homeStyles.cardTitle}>{article.title}</h2>
               <p className={homeStyles.cardExcerpt}>{article.excerpt}</p>
               <div className={homeStyles.cardMeta}>
-                <span className={homeStyles.siteName}>{article.siteName || new URL(article.url).hostname}</span>
+                <span className={homeStyles.siteName}>{getSiteLabel(article.url, article.siteName)}</span>
                 <span className={homeStyles.date}>{new Date(article.savedAt).toLocaleDateString()}</span>
               </div>
             </div>

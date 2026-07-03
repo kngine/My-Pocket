@@ -48,7 +48,7 @@ export default function Reader() {
     <div className={`container ${styles.readerContainer}`}>
       <nav className={`${styles.nav} glass-panel`}>
         <button className={styles.navButton} onClick={() => router.push('/')}>
-          ← Back
+          Back
         </button>
         <div className={styles.controls}>
           <button 

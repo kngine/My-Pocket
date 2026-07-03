@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
+    statusBarStyle: "black-translucent",
     title: "MyPocket",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f7f9fa",
+  themeColor: "#050505",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -30,7 +30,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body>{children}</body>
     </html>
