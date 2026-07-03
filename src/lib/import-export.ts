@@ -141,7 +141,17 @@ export async function buildExport(): Promise<MyPocketExport> {
       createdAt: folder.createdAt,
     })),
     articles: articles.map((article) => ({
-      ...article,
+      id: article.id,
+      url: article.url,
+      title: article.title,
+      content: article.content,
+      textContent: article.textContent,
+      length: article.length,
+      excerpt: article.excerpt,
+      byline: article.byline,
+      siteName: article.siteName,
+      savedAt: article.savedAt,
+      folderId: article.folderId,
       folderName: article.folderId ? folderById.get(article.folderId)?.name : undefined,
     })),
   };

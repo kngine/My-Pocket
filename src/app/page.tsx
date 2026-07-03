@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   saveArticle, getAllArticles, Article, deleteArticle, updateArticle,
@@ -19,6 +19,8 @@ import styles from './page.module.css';
 
 export default function Home() {
   const [url, setUrl] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [appliedSearchQuery, setAppliedSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   
@@ -35,6 +37,23 @@ export default function Home() {
 
   const router = useRouter();
   const isBusy = isLoading || importProgress?.phase === 'folders' || importProgress?.phase === 'articles';
+  const normalizedSearchQuery = appliedSearchQuery.trim().toLowerCase();
+  const visibleArticles = useMemo(() => {
+    if (!normalizedSearchQuery) return articles;
+
+    return articles.filter((article) => {
+      const searchableText = [
+        article.title,
+        article.excerpt,
+        article.byline,
+        article.siteName,
+        article.url,
+        article.textContent,
+      ].join(' ').toLowerCase();
+
+      return searchableText.includes(normalizedSearchQuery);
+    });
+  }, [articles, normalizedSearchQuery]);
 
   const loadData = useCallback(async () => {
     const [savedArticles, savedFolders] = await Promise.all([
@@ -119,6 +138,16 @@ export default function Home() {
     loadData();
   };
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setAppliedSearchQuery(searchQuery.trim());
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    setAppliedSearchQuery('');
+  };
+
   const handleExport = async () => {
     setError('');
     setStatusMessage('');
@@ -126,7 +155,7 @@ export default function Home() {
     try {
       const data = await buildExport();
       downloadExport(data);
-      setStatusMessage(`Exported ${data.articles.length} articles.`);
+      setStatusMessage(`Exported ${data.articles.length} articles with full offline content.`);
     } catch {
       setError('Export failed. Please try again.');
     }
@@ -205,16 +234,6 @@ export default function Home() {
             <p className={styles.subtitle}>Save articles for offline reading</p>
           </div>
         </div>
-        <div className={styles.statsRow} aria-label="Library summary">
-          <div className={styles.statPill}>
-            <span>{articles.length}</span>
-            <small>Unread</small>
-          </div>
-          <div className={styles.statPill}>
-            <span>{folders.length}</span>
-            <small>Folders</small>
-          </div>
-        </div>
         <div className={styles.dataActions}>
           <button
             type="button"
@@ -265,6 +284,35 @@ export default function Home() {
           </button>
         </form>
 
+        <form className={styles.searchPanel} onSubmit={handleSearch}>
+          <div className={styles.searchGlow} aria-hidden="true" />
+          <div className={styles.searchWrap}>
+            <button type="submit" className={styles.searchButton}>
+              Search
+            </button>
+            <input
+              type="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search your library"
+              className={styles.searchInput}
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                className={styles.clearSearchButton}
+                onClick={handleClearSearch}
+                aria-label="Clear search"
+              >
+                x
+              </button>
+            )}
+          </div>
+        </form>
+
         {error && <div className={styles.error}>{error}</div>}
         {statusMessage && !error && <div className={styles.status}>{statusMessage}</div>}
         {importProgress && (
@@ -276,69 +324,18 @@ export default function Home() {
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
             <div>
-              <p className={styles.sectionKicker}>Browse</p>
-              <h2 className={styles.sectionTitle}>Folders</h2>
-    </div>
-            {!isCreatingFolder ? (
-              <button className={styles.textButton} onClick={() => setIsCreatingFolder(true)}>New</button>
-            ) : (
-              <form onSubmit={handleCreateFolder} className={styles.folderForm}>
-                <input
-                  autoFocus
-                  type="text"
-                  placeholder="Folder name"
-                  className={styles.folderInput}
-                  value={newFolderName}
-                  onChange={(e) => setNewFolderName(e.target.value)}
-                />
-                <button type="submit" className={styles.smallButton}>Create</button>
-                <button type="button" className={styles.cancelButton} onClick={() => setIsCreatingFolder(false)}>Cancel</button>
-              </form>
-            )}
-          </div>
-
-          <div className={styles.folderGrid}>
-            {folders.map(folder => (
-              <div
-                key={folder.id}
-                className={styles.folderCard}
-                onClick={() => router.push(`/folder/${folder.id}`)}
-              >
-                <div className={styles.folderIcon} aria-hidden="true">{folder.name.slice(0, 1).toUpperCase()}</div>
-                <h3 className={styles.folderName}>{folder.name}</h3>
-                <button
-                  className={styles.deleteButton}
-                  onClick={(e) => handleDeleteFolder(e, folder.id)}
-                  aria-label="Delete folder"
-                >x</button>
-              </div>
-            ))}
-            {folders.length === 0 && (
-              <div className={styles.emptyShelf}>
-                Create folders to keep your reading list organized.
-              </div>
-            )}
-          </div>
-        </section>
-
-        <section className={styles.section}>
-          <div className={styles.sectionHeader}>
-            <div>
-              <p className={styles.sectionKicker}>Recently Added</p>
-              <h2 className={styles.sectionTitle}>Unorganized Articles</h2>
+              <p className={styles.sectionKicker}>{normalizedSearchQuery ? 'Search Results' : 'Recently Added'}</p>
+              <h2 className={styles.sectionTitle}>Articles</h2>
             </div>
           </div>
 
           <div className={styles.grid}>
-            {articles.map((article) => (
+            {visibleArticles.map((article) => (
               <div
                 key={article.id}
                 className={styles.card}
                 onClick={() => router.push(`/reader/${article.id}`)}
               >
-                <div className={styles.cardArtwork} aria-hidden="true">
-                  {getSiteLabel(article.url, article.siteName).slice(0, 1).toUpperCase()}
-                </div>
                 <div className={styles.cardContent}>
                   <h2 className={styles.cardTitle}>{article.title}</h2>
                   <p className={styles.cardExcerpt}>{article.excerpt}</p>
@@ -370,9 +367,61 @@ export default function Home() {
 
             {articles.length === 0 && !isLoading && (
               <div className={styles.emptyState}>
-                <span className={styles.emptyIcon}>+</span>
                 <p>No unorganized articles yet.</p>
                 <small>Paste a link above to build your offline library.</small>
+              </div>
+            )}
+            {articles.length > 0 && visibleArticles.length === 0 && (
+              <div className={styles.emptyState}>
+                <p>No matching articles.</p>
+                <small>Try searching by title, site, author, or URL.</small>
+              </div>
+            )}
+          </div>
+        </section>
+
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <div>
+              <p className={styles.sectionKicker}>Browse</p>
+              <h2 className={styles.sectionTitle}>Folders</h2>
+            </div>
+            {!isCreatingFolder ? (
+              <button className={styles.textButton} onClick={() => setIsCreatingFolder(true)}>New</button>
+            ) : (
+              <form onSubmit={handleCreateFolder} className={styles.folderForm}>
+                <input
+                  autoFocus
+                  type="text"
+                  placeholder="Folder name"
+                  className={styles.folderInput}
+                  value={newFolderName}
+                  onChange={(e) => setNewFolderName(e.target.value)}
+                />
+                <button type="submit" className={styles.smallButton}>Create</button>
+                <button type="button" className={styles.cancelButton} onClick={() => setIsCreatingFolder(false)}>Cancel</button>
+              </form>
+            )}
+          </div>
+
+          <div className={styles.folderGrid}>
+            {folders.map(folder => (
+              <div
+                key={folder.id}
+                className={styles.folderCard}
+                onClick={() => router.push(`/folder/${folder.id}`)}
+              >
+                <h3 className={styles.folderName}>{folder.name}</h3>
+                <button
+                  className={styles.deleteButton}
+                  onClick={(e) => handleDeleteFolder(e, folder.id)}
+                  aria-label="Delete folder"
+                >x</button>
+              </div>
+            ))}
+            {folders.length === 0 && (
+              <div className={styles.emptyShelf}>
+                Create folders to keep your reading list organized.
               </div>
             )}
           </div>
