@@ -229,7 +229,6 @@ export default function Home() {
             <img src="/icon.svg" alt="MyPocket Logo" className={styles.logo} />
           </div>
           <div className={styles.heroCopy}>
-            <p className={styles.eyebrow}>Library</p>
             <h1 className={styles.title}>MyPocket</h1>
             <p className={styles.subtitle}>Save articles for offline reading</p>
           </div>
