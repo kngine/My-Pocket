@@ -224,41 +224,8 @@ export default function Home() {
   return (
     <div className={`container ${styles.appShell}`}>
       <header className={styles.header}>
-        <div className={styles.heroTop}>
-          <div className={styles.heroArtwork}>
-            <img src="/icon.svg" alt="MyPocket Logo" className={styles.logo} />
-          </div>
-          <div className={styles.heroCopy}>
-            <h1 className={styles.title}>MyPocket</h1>
-            <p className={styles.subtitle}>Save articles for offline reading</p>
-          </div>
-        </div>
-        <div className={styles.dataActions}>
-          <button
-            type="button"
-            className={styles.subtleButton}
-            onClick={handleExport}
-            disabled={isBusy}
-          >
-            Export
-          </button>
-          <span className={styles.dataDivider}>/</span>
-          <button
-            type="button"
-            className={styles.subtleButton}
-            onClick={handleImportClick}
-            disabled={isBusy}
-          >
-            Import
-          </button>
-          <input
-            ref={importInputRef}
-            type="file"
-            accept="application/json,.json"
-            className={styles.hiddenInput}
-            onChange={handleImportFile}
-          />
-        </div>
+        <h1 className={styles.title}>MyPocket</h1>
+        <p className={styles.subtitle}>Save articles for offline reading</p>
       </header>
 
       <main className={styles.mainContent}>
@@ -281,35 +248,6 @@ export default function Home() {
           <button type="submit" className={styles.button} disabled={isBusy}>
             {isLoading ? <div className="spinner" /> : 'Save'}
           </button>
-        </form>
-
-        <form className={styles.searchPanel} onSubmit={handleSearch}>
-          <div className={styles.searchGlow} aria-hidden="true" />
-          <div className={styles.searchWrap}>
-            <button type="submit" className={styles.searchButton}>
-              Search
-            </button>
-            <input
-              type="search"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search your library"
-              className={styles.searchInput}
-              autoCapitalize="none"
-              autoCorrect="off"
-              spellCheck={false}
-            />
-            {searchQuery && (
-              <button
-                type="button"
-                className={styles.clearSearchButton}
-                onClick={handleClearSearch}
-                aria-label="Clear search"
-              >
-                x
-              </button>
-            )}
-          </div>
         </form>
 
         {error && <div className={styles.error}>{error}</div>}
@@ -425,8 +363,65 @@ export default function Home() {
             )}
           </div>
         </section>
-      </main>
 
+        <footer className={styles.pageFooter} aria-label="Search and data actions">
+          <form className={styles.searchPanel} onSubmit={handleSearch}>
+            <div className={styles.searchGlow} aria-hidden="true" />
+            <div className={styles.searchWrap}>
+              <button type="submit" className={styles.searchButton}>
+                Search
+              </button>
+              <input
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search your library"
+                className={styles.searchInput}
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  className={styles.clearSearchButton}
+                  onClick={handleClearSearch}
+                  aria-label="Clear search"
+                >
+                  x
+                </button>
+              )}
             </div>
+          </form>
+
+          <div className={styles.dataActions}>
+            <button
+              type="button"
+              className={styles.subtleButton}
+              onClick={handleExport}
+              disabled={isBusy}
+            >
+              Export
+            </button>
+            <span className={styles.dataDivider}>/</span>
+            <button
+              type="button"
+              className={styles.subtleButton}
+              onClick={handleImportClick}
+              disabled={isBusy}
+            >
+              Import
+            </button>
+            <input
+              ref={importInputRef}
+              type="file"
+              accept="application/json,.json"
+              className={styles.hiddenInput}
+              onChange={handleImportFile}
+            />
+          </div>
+        </footer>
+      </main>
+    </div>
   );
 }
